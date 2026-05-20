@@ -5,23 +5,23 @@ public class GoogleVoiceIntegration {
 
     public init() {
         self.manager = GoogleVoiceManager()
-        setupCallbacks()
+        Task {
+            await self.configureHandlers()
+        }
     }
 
-    private func setupCallbacks() {
-        Task {
-            await manager.onIncomingCall = { [weak self] call in
+    private func configureHandlers() async {
+        await manager.setHandlers(
+            onIncomingCall: { [weak self] call in
                 self?.handleIncomingCall(call)
-            }
-
-            await manager.onNewMessage = { [weak self] message, phoneNumber in
+            },
+            onNewMessage: { [weak self] message, phoneNumber in
                 self?.handleNewMessage(message, from: phoneNumber)
-            }
-
-            await manager.onCallEnded = { [weak self] call in
+            },
+            onCallEnded: { [weak self] call in
                 self?.handleCallEnded(call)
             }
-        }
+        )
     }
 
     public func initializeAuthentication(code: String, clientId: String, clientSecret: String) async throws {

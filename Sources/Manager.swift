@@ -110,7 +110,7 @@ public actor GoogleVoiceManager {
     private func pollForUpdates() async throws {
         let newCalls = try await client.getCallHistory()
         let oldCallIds = Set(callHistoryCache.map { $0.id })
-        let newCallIds = Set(newCalls.map { $0.id })
+        _ = Set(newCalls.map { $0.id })
 
         let incomingCalls = newCalls.filter { call in
             !oldCallIds.contains(call.id) && call.type == .incoming
@@ -137,5 +137,21 @@ public actor GoogleVoiceManager {
         }
 
         conversationsCache = conversations
+    }
+
+    public func setHandlers(
+        onIncomingCall: ((GoogleVoiceCall) -> Void)? = nil,
+        onNewMessage: ((GoogleVoiceMessage, String) -> Void)? = nil,
+        onCallEnded: ((GoogleVoiceCall) -> Void)? = nil
+    ) {
+        if let incomingCall = onIncomingCall {
+            self.onIncomingCall = incomingCall
+        }
+        if let newMessage = onNewMessage {
+            self.onNewMessage = newMessage
+        }
+        if let callEnded = onCallEnded {
+            self.onCallEnded = callEnded
+        }
     }
 }
