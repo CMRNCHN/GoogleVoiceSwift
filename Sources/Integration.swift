@@ -85,6 +85,18 @@ public class GoogleVoiceIntegration {
         return try await manager.searchContacts(query: name)
     }
 
+    public func getCalls(limit: Int = 50) async throws -> [GoogleVoiceCall] {
+        return try await manager.getRecentCalls(limit: limit)
+    }
+
+    public func getConversations() async throws -> [GoogleVoiceConversation] {
+        return try await manager.getConversations()
+    }
+
+    public func getContacts() async throws -> [GoogleVoiceContact] {
+        return try await manager.getAllContacts()
+    }
+
     private func handleIncomingCall(_ call: GoogleVoiceCall) {
         let contactName = call.name ?? call.phoneNumber
         GoogleVoiceLogger.log("Incoming call from \(contactName)", subsystem: "GoogleVoiceIntegration")
