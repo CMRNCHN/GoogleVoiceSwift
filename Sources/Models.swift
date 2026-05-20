@@ -44,7 +44,7 @@ public struct GoogleVoiceCall: Codable, Identifiable {
     }
 }
 
-public struct GoogleVoiceMessage: Codable, Identifiable {
+public struct GoogleVoiceMessage: Codable, Identifiable, Hashable {
     public let id: String
     public let phoneNumber: String
     public let name: String?
@@ -70,7 +70,7 @@ public struct GoogleVoiceMessage: Codable, Identifiable {
     }
 }
 
-public struct GoogleVoiceContact: Codable, Identifiable {
+public struct GoogleVoiceContact: Codable, Identifiable, Hashable {
     public let id: String
     public let name: String
     public let phoneNumbers: [String]
@@ -87,8 +87,7 @@ public struct GoogleVoiceContact: Codable, Identifiable {
         self.starred = starred
     }
 }
-
-public struct GoogleVoiceConversation: Codable, Identifiable {
+public struct GoogleVoiceConversation: Codable, Identifiable, Hashable {
     public let id: String
     public let phoneNumber: String
     public let name: String?
